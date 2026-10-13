@@ -3,9 +3,64 @@
 [ext_resource type="Texture2D" uid="uid://c3cu02onfcdmy" path="res://assets/mario.png" id="1_w7c3h"]
 [ext_resource type="Script" uid="uid://dbgadly5223fb" path="res://scenes/character_body_2d.gd" id="1_w8frs"]
 [ext_resource type="Texture2D" uid="uid://ds4e3387uueo6" path="res://assets/tiles.png" id="2_w8frs"]
+[ext_resource type="Script" uid="uid://c5lebperfyq67" path="res://scenes/coin.gd" id="4_mx8sn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p4h7j"]
 size = Vector2(12, 16)
+
+[sub_resource type="Animation" id="Animation_ppgk2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_2r41h"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_klq6b"]
+resource_name = "run"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b121j"]
+_data = {
+&"RESET": SubResource("Animation_ppgk2"),
+&"idle": SubResource("Animation_2r41h"),
+&"run": SubResource("Animation_klq6b")
+}
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mx8sn"]
 texture = ExtResource("2_w8frs")
@@ -49,6 +104,37 @@ texture = ExtResource("2_w8frs")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_mx8sn")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_8c41q"]
+atlas = ExtResource("2_w8frs")
+region = Rect2(64, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_olg7q"]
+atlas = ExtResource("2_w8frs")
+region = Rect2(80, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t1rx8"]
+atlas = ExtResource("2_w8frs")
+region = Rect2(96, 32, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l0a1n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8c41q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_olg7q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t1rx8")
+}],
+"loop": 1,
+"name": &"new_animation",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_p4h7j"]
+
 [node name="Node2D" type="Node2D" unique_id=1148967368]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1874175897]
@@ -61,7 +147,11 @@ texture = ExtResource("1_w7c3h")
 hframes = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1654456436]
+visible = false
 shape = SubResource("RectangleShape2D_p4h7j")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D" unique_id=1127815643]
+libraries/ = SubResource("AnimationLibrary_b121j")
 
 [node name="TileMap" type="TileMapLayer" parent="." unique_id=1964799328]
 texture_filter = 1
@@ -70,3 +160,16 @@ tile_map_data = PackedByteArray("AAD//wEAAAAAAAAAAAAAAAEAAAAAAAAAAAABAAEAAAAAAAA
 tile_set = SubResource("TileSet_p4h7j")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1073232465]
+
+[node name="StaticBody2D" type="Area2D" parent="." unique_id=1633743165]
+position = Vector2(156, 97)
+script = ExtResource("4_mx8sn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StaticBody2D" unique_id=1168676255]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_l0a1n")
+animation = &"new_animation"
+frame_progress = 0.18722376
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=223227347]
+shape = SubResource("CircleShape2D_p4h7j")
