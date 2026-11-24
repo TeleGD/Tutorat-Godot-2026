@@ -4,11 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://bk4wpecqsmkip" path="res://assets/mario.png" id="1_wtcfe"]
 [ext_resource type="Script" uid="uid://dpb0wqhavmkuk" path="res://camera.gd" id="3_epypp"]
 [ext_resource type="Texture2D" uid="uid://bfhicnwe63q07" path="res://assets/tiles.png" id="4_0hol4"]
+[ext_resource type="PackedScene" uid="uid://c6v8itymtm2so" path="res://coin.tscn" id="5_kdubu"]
+[ext_resource type="Script" uid="uid://cpaabya2bthrj" path="res://label_coin.gd" id="6_kdubu"]
+[ext_resource type="Texture2D" uid="uid://cimut3oexrv26" path="res://assets/goomba.png" id="7_d21ai"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p4h7j"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_l0a1n"]
-size = Vector2(160, 20)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_q6r6c"]
 texture = ExtResource("4_0hol4")
@@ -48,12 +48,15 @@ texture = ExtResource("4_0hol4")
 2:4/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_p4h7j"]
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 8
 sources/0 = SubResource("TileSetAtlasSource_q6r6c")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l0a1n"]
 
 [node name="Node2D" type="Node2D" unique_id=1108073477]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1578684144]
+collision_mask = 14
 script = ExtResource("1_0e48y")
 
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D" unique_id=817429416]
@@ -64,19 +67,41 @@ hframes = 7
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=2117303821]
 shape = SubResource("RectangleShape2D_p4h7j")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1035776598]
-position = Vector2(0, 76)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1982639266]
-position = Vector2(70, 0)
-shape = SubResource("RectangleShape2D_l0a1n")
-
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1994896221 node_paths=PackedStringArray("player")]
 zoom = Vector2(3, 3)
 script = ExtResource("3_epypp")
 player = NodePath("../CharacterBody2D")
 
+[node name="Label" type="Label" parent="Camera2D" unique_id=1715196316]
+offset_left = -178.0
+offset_top = -102.0
+offset_right = -138.0
+offset_bottom = -79.0
+text = "0"
+script = ExtResource("6_kdubu")
+
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1606967562]
 texture_filter = 1
 tile_map_data = PackedByteArray("AAD5/wIAAAAAAAAAAAD6/wIAAAAAAAAAAAD7/wIAAAAAAAAAAAD8/wMAAAAAAAAAAAD9/wMAAAAAAAAAAAD+/wMAAAAAAAAAAAD//wMAAAAAAAAAAAAAAAMAAAAAAAAAAAABAAMAAAAAAAAAAAACAAMAAAAAAAAAAAADAAMAAAAAAAAAAAAEAAMAAAAAAAAAAAAFAAMAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAIAAAAAAAAAAAAFAAIAAAAAAAAAAAAEAAIAAAAAAAAAAAADAAIAAAAAAAAAAAACAAIAAAAAAAAAAAAAAAIAAAAAAAAAAAD//wIAAAAAAAAAAAD+/wIAAAAAAAAAAAD9/wIAAAAAAAAAAAD8/wIAAAAAAAAAAAABAAIAAAAAAAAAAAD5/wMAAAAAAAAAAAD6/wMAAAAAAAAAAAD6/wQAAAAAAAAAAAD7/wQAAAAAAAAAAAD8/wQAAAAAAAAAAAD7/wMAAAAAAAAAAAD5/wQAAAAAAAAAAAD9/wQAAAAAAAAAAAD+/wQAAAAAAAAAAAD//wQAAAAAAAAAAAAAAAQAAAAAAAAAAAABAAQAAAAAAAAAAAACAAQAAAAAAAAAAAADAAQAAAAAAAAAAAAEAAQAAAAAAAAAAAAFAAQAAAAAAAAAAAAGAAQAAAAAAAAAAAADAAAAAAACAAEAAAADAAEAAAACAAIAAAAEAAAAAAADAAEAAAAEAAEAAAADAAIAAAA=")
 tile_set = SubResource("TileSet_p4h7j")
+
+[node name="Area2D" parent="." unique_id=200544594 instance=ExtResource("5_kdubu")]
+position = Vector2(35, 0)
+
+[node name="Area2D2" parent="." unique_id=1758211435 instance=ExtResource("5_kdubu")]
+position = Vector2(37, -24)
+
+[node name="Area2D3" parent="." unique_id=341108859 instance=ExtResource("5_kdubu")]
+position = Vector2(15, -24)
+
+[node name="CharacterBody2D2" type="CharacterBody2D" parent="." unique_id=1902724738]
+position = Vector2(-28, -22)
+collision_layer = 2
+collision_mask = 9
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D2" unique_id=102947573]
+shape = SubResource("CircleShape2D_l0a1n")
+
+[node name="Goomba" type="Sprite2D" parent="CharacterBody2D2" unique_id=1836830550]
+texture = ExtResource("7_d21ai")
+hframes = 3
